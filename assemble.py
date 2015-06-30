@@ -42,6 +42,8 @@ def debrujin(dna, k):
     return res
     
     
+
+    
 def debrujin_patterns(patterns):
     k = len(patterns[0])
     kmers = []
@@ -49,6 +51,7 @@ def debrujin_patterns(patterns):
     for pattern in patterns:
         kmers.append(pattern[0:-1])
         kmers.append(pattern[1:k])
+    
     for kmer in sorted(list(set(kmers))):
         c = []
         for kkmer in patterns:
@@ -56,6 +59,29 @@ def debrujin_patterns(patterns):
                 c.append(kkmer[1:k+1])
         if len(c)>0:
             res.append('%s %s %s'%(kmer,'->',','.join(sorted(c))))
+    return res
+
+
+
+def debrujin_patterns_pairs(patterns):
+    k = len(patterns[0][0])
+    kmers = []
+    res = []
+    for pattern in patterns:
+        #print pattern
+        kmers.append((pattern[0][0:-1],pattern[1][0:-1]))
+        kmers.append((pattern[0][1:k],pattern[1][1:k]))
+    
+    #print kmers
+    
+    for kmer in sorted(list(set(kmers))):
+        c = []
+        for kkmer in patterns:
+            if (kkmer[0][0:-1],kkmer[1][0:-1]) == kmer:
+                c.append((kkmer[0][1:k+1], kkmer[1][1:k+1]))
+        if len(c)>0:
+            #res.append('%s %s %s'%(kmer,'->',','.join(sorted(c))))
+            res.append([kmer, c])
     return res
 
 
@@ -233,4 +259,57 @@ if __name__ == '__main__':
     #for edge in edges2:
     #    f.write(edge[0])
     #    
-        
+    
+    #with open('test.txt','r') as f:
+    #    k,d = map(int,f.readline().strip().split(' '))
+    #    dnas = [line.strip().split('|') for line in f.readlines()]
+    #f.close()
+    #dnas = [(dna[0],dna[1]) for dna in dnas]
+    #
+    #graph = debrujin_patterns_pairs(dnas)
+    #g = nx.DiGraph()
+    #for edge in graph:
+    #    src = edge[0]
+    #    for dst in edge[1]:
+    #        g.add_edge('|'.join(src), '|'.join(dst))
+    #print nx.nodes(g)
+    #print nx.edges(g)
+    #
+    #
+    #deg = g.degree(nx.nodes(g))
+    #special = [item for item in  deg.keys() if deg[item]%2 == 1]
+    #print special
+    #if g.in_degree(special[0]) >= g.in_degree(special[1]):
+    #    st = special[1]
+    #    g.add_edge(special[0],special[1])
+    #else:
+    #    st = special[0]
+    #    g.add_edge(special[1],special[0])
+    #    
+    #print st
+    #edges = []
+    #for edge in eulerian_circuit(g,st):
+    #    edges.append(edge)
+    #print edges
+    #
+    #edges1 = [(item[0].split('|')[0], item[1].split('|')[0]) for item in edges]    
+    #print edges1
+    #
+    #edges2 = [(item[0].split('|')[1], item[1].split('|')[1]) for item in edges]    
+    #print edges2
+    #
+    #str1 = ''
+    #str2 = ''
+    #f = open('res.txt','w')
+    #for edge in edges1[0:-1]:
+    #    str1 += (edge[0][0])
+    #str1 += (edge[1])
+    #
+    #for edge in edges2[0:-1]:
+    #    str2 += (edge[0][0])
+    #str2 += (edge[1])
+    #
+    #st = str1 + str2[len(str2)/2:len(str2)]
+    #print st
+    #
+    #f.close()
